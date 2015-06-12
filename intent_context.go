@@ -4,13 +4,11 @@ import (
 	"bytes"
 	"encoding/json"
 	"net/http"
-
-	"github.com/wealth-ai/go-wit"
 )
 
 type intentContext struct {
 	data        *SlackCommandData
-	outcome     wit.Outcome
+	outcome     outcome
 	botInstance *Bot
 }
 
@@ -18,7 +16,7 @@ func (c *intentContext) SlackData() *SlackCommandData {
 	return c.data
 }
 
-func (c *intentContext) WitOutcome() wit.Outcome {
+func (c *intentContext) WitOutcome() outcome {
 	return c.outcome
 }
 

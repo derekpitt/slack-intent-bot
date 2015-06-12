@@ -39,8 +39,3 @@ This example uses negroni, but feel free to use anything that can use http.Handl
     	n.UseHandler(mux)
     	n.Run(":3001")
     }
-
-
-### TODO
-
-- PR for version update on https://github.com/wealth-ai/go-wit (out of the box, this package won't work, since the 3rd party lib uses an old version of the wit.ai API)

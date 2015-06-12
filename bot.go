@@ -5,7 +5,6 @@ import (
 
 	"github.com/mholt/binding"
 	"github.com/unrolled/render"
-	"github.com/wealth-ai/go-wit"
 )
 
 type Bot struct {
@@ -13,7 +12,7 @@ type Bot struct {
 	IncomingURL   string
 
 	handlers  map[string]IntentHandler
-	witClient *wit.Client
+	witClient *witClient
 	r         *render.Render
 }
 
@@ -23,7 +22,7 @@ func NewBot(outGoingToken, incomingURL, witAPIKey string) *Bot {
 		IncomingURL:   incomingURL,
 
 		handlers:  make(map[string]IntentHandler),
-		witClient: wit.NewClient(witAPIKey),
+		witClient: newWitClient(witAPIKey),
 		r:         render.New(),
 	}
 }
@@ -42,15 +41,13 @@ func (b *Bot) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// go off to witai
-	message, err := b.witClient.Message(&wit.MessageRequest{
-		Query: data.Text,
-	})
+	outcomes, err := b.witClient.getOutcomes(data.Text)
 
 	if err != nil {
 		return
 	}
 
-	for _, outcome := range message.Outcomes {
+	for _, outcome := range outcomes {
 		if h, ok := b.handlers[outcome.Intent]; ok {
 			c := &intentContext{
 				botInstance: b,
