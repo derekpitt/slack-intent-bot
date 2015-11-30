@@ -1,6 +1,10 @@
 package slackintent
 
-import "github.com/mholt/binding"
+import (
+	"net/http"
+
+	"github.com/mholt/binding"
+)
 
 type SlackCommandData struct {
 	Token       string
@@ -11,7 +15,7 @@ type SlackCommandData struct {
 	Text        string
 }
 
-func (s *SlackCommandData) FieldMap() binding.FieldMap {
+func (s *SlackCommandData) FieldMap(*http.Request) binding.FieldMap {
 	return binding.FieldMap{
 		&s.Token:       "token",
 		&s.ChannelID:   "channel_id",
